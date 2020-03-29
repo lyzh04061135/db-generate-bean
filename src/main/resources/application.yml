@@ -4,8 +4,8 @@ mybatis:
 spring:
   datasource:
     driver-class-name: dm.jdbc.driver.DmDriver
-    username: MDMDB
-    password: MDMDB123456
+    username: xxxxxx
+    password: xxxxxx
     url: jdbc:dm://127.0.0.1:5236
     druid:
       max-active: 50
