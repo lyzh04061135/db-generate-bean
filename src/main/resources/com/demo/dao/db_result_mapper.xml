@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.Result">
+    <resultMap id="tableColumn" type="com.demo.bean.TableColumn">
+        <result column="OWNER" property="owner"></result>
+        <result column="TABLE_NAME" property="tableName"></result>
+        <result column="COLUMN_NAME" property="columnName"></result>
+        <result column="DATA_TYPE" property="dataType"></result>
+    </resultMap>
+
+    <resultMap id="constraintColumn" type="com.demo.bean.ConstraintColumn">
+        <result column="OWNER" property="owner"></result>
+        <result column="CONSTRAINT_NAME" property="constraintName"></result>
+        <result column="TABLE_NAME" property="tableName"></result>
+        <result column="COLUMN_NAME" property="columnName"></result>
+    </resultMap>
+</mapper>

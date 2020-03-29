@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.MdUserDao">
+<resultMap id="MdUserEntity" type="com.demo.dao.MdUserEntity">
+<result column="user_id" property="userId"></result>
+<result column="login_name" property="loginName"></result>
+<result column="password" property="password"></result>
+<result column="real_name" property="realName"></result>
+<result column="sex" property="sex"></result>
+<result column="phone" property="phone"></result>
+<result column="email" property="email"></result>
+<result column="status" property="status"></result>
+<result column="create_time" property="createTime"></result>
+<result column="update_time" property="updateTime"></result>
+<result column="creator" property="creator"></result>
+<result column="updater" property="updater"></result>
+<result column="delete_flag" property="deleteFlag"></result>
+</resultMap>
+
+<select id="getPk" parameterType="object" resultMap="MdUserEntity">
+select * from "MDMDB"."md_user" where user_id=#{userId}
+</select>
+
+<update id="updatePk" parameterType="com.demo.dao.MdUserEntity">
+update "MDMDB"."md_user" set
+<if test="loginName==null">login_name=null</if>
+<if test="loginName==''.toString()">login_name=''</if>
+<if test="loginName!=null and loginName!=''.toString()">login_name=#{loginName}</if>,
+<if test="password==null">password=null</if>
+<if test="password==''.toString()">password=''</if>
+<if test="password!=null and password!=''.toString()">password=#{password}</if>,
+<if test="realName==null">real_name=null</if>
+<if test="realName==''.toString()">real_name=''</if>
+<if test="realName!=null and realName!=''.toString()">real_name=#{realName}</if>,
+<if test="sex==null">sex=null</if>
+<if test="sex==''.toString()">sex=''</if>
+<if test="sex!=null and sex!=''.toString()">sex=#{sex}</if>,
+<if test="phone==null">phone=null</if>
+<if test="phone==''.toString()">phone=''</if>
+<if test="phone!=null and phone!=''.toString()">phone=#{phone}</if>,
+<if test="email==null">email=null</if>
+<if test="email==''.toString()">email=''</if>
+<if test="email!=null and email!=''.toString()">email=#{email}</if>,
+<if test="status==null">status=null</if>
+<if test="status==''.toString()">status=''</if>
+<if test="status!=null and status!=''.toString()">status=#{status}</if>,
+<if test="createTime==null">create_time=null</if>
+<if test="createTime!=null">create_time=#{createTime}</if>,
+<if test="updateTime==null">update_time=null</if>
+<if test="updateTime!=null">update_time=#{updateTime}</if>,
+<if test="creator==null">creator=null</if>
+<if test="creator==''.toString()">creator=''</if>
+<if test="creator!=null and creator!=''.toString()">creator=#{creator}</if>,
+<if test="updater==null">updater=null</if>
+<if test="updater==''.toString()">updater=''</if>
+<if test="updater!=null and updater!=''.toString()">updater=#{updater}</if>,
+<if test="deleteFlag==null">delete_flag=null</if>
+<if test="deleteFlag==''.toString()">delete_flag=''</if>
+<if test="deleteFlag!=null and deleteFlag!=''.toString()">delete_flag=#{deleteFlag}</if>
+where user_id=#{userId}
+</update>
+
+<delete id="removePk" parameterType="object">
+delete from "MDMDB"."md_user" where user_id=#{userId}
+</delete>
+
+<insert id="insertMdUserEntity" parameterType="com.demo.dao.MdUserEntity">
+ insert into "MDMDB"."md_user"(user_id,login_name,password,real_name,sex,phone,email,status,create_time,update_time,creator,updater,delete_flag)values(<if test="userId==null">null</if><if test="userId!=null">#{userId}</if>,<if test="loginName==null">null</if><if test="loginName!=null">#{loginName}</if>,<if test="password==null">null</if><if test="password!=null">#{password}</if>,<if test="realName==null">null</if><if test="realName!=null">#{realName}</if>,<if test="sex==null">null</if><if test="sex!=null">#{sex}</if>,<if test="phone==null">null</if><if test="phone!=null">#{phone}</if>,<if test="email==null">null</if><if test="email!=null">#{email}</if>,<if test="status==null">null</if><if test="status!=null">#{status}</if>,<if test="createTime==null">null</if><if test="createTime!=null">#{createTime}</if>,<if test="updateTime==null">null</if><if test="updateTime!=null">#{updateTime}</if>,<if test="creator==null">null</if><if test="creator!=null">#{creator}</if>,<if test="updater==null">null</if><if test="updater!=null">#{updater}</if>,<if test="deleteFlag==null">null</if><if test="deleteFlag!=null">#{deleteFlag}</if>)
+</insert>
+
+</mapper>

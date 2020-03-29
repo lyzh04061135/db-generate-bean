@@ -1,0 +1,35 @@
+mybatis:
+  type-aliases-package: com.demo.bean
+  mapper-locations: classpath*:com/demo/dao/*_mapper.xml
+spring:
+  datasource:
+    driver-class-name: dm.jdbc.driver.DmDriver
+    username: MDMDB
+    password: MDMDB123456
+    url: jdbc:dm://127.0.0.1:5236
+    druid:
+      max-active: 50
+      max-wait: 60000
+      initial-size: 5
+      min-idle: 1
+      pool-prepared-statements: true
+      max-open-prepared-statements: 20
+      validation-query: select 1 from dual
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 120000
+      remove-abandoned: true
+      remove-abandoned-timeout: 180
+      log-abandoned: true
+      filters: [stat,wall,logback]
+  application:
+    name: db-generate-db
+server:
+  port: 6082
+logging:
+  level:
+    com:
+      demo: debug
+consoleLog:
+    level: DEBUG
