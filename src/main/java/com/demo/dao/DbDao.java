@@ -5,6 +5,7 @@ import com.demo.bean.TableColumn;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DbDao {
     List<TableColumn> getTableColumns(TableColumn tableColumn);
@@ -12,4 +13,6 @@ public interface DbDao {
     List<ConstraintColumn> getConstraintColumns(ConstraintColumn constraintColumn);
 
     Integer executeSql(@Param("sql") String sql);
+
+    List<Map<String, Object>> getNameAges();
 }

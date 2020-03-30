@@ -123,6 +123,7 @@ public class FileService {
                 ConstraintColumn column = constraintColumns.get(i);
                 String upperFieldName = CommonUtil.convert(column.getColumnName());
                 String dataType=getDataType(tableColumns, column.getColumnName());
+                dataType=convertDataType(dataType);
                 String fieldName = upperFieldName.substring(0, 1).toLowerCase() + upperFieldName.substring(1);
                 string = String.format("List<%s> getPk(%s %s);", fileNameWithoutSuffix+"Entity", dataType, fieldName);
                 strings.add(string);
@@ -192,6 +193,7 @@ public class FileService {
         if (constraintColumns != null && constraintColumns.size()>0) {
             String columnName=constraintColumns.get(0).getColumnName();
             String dataType=getDataType(tableColumns, columnName);
+            dataType=convertDataType(dataType);
             String upperFieldName = CommonUtil.convert(columnName);
             String fieldName = upperFieldName.substring(0, 1).toLowerCase() + upperFieldName.substring(1);
             string = String.format("<select id=\"getPk\" parameterType=\"object\" resultMap=\"%s\">", fileNameWithoutSuffix+"Entity");
@@ -220,7 +222,7 @@ public class FileService {
                     strings.add(string);
                     if (j==tableColumns.size()-2) {
                         if (tableColumns.get(tableColumns.size()-1).getColumnName().equals(columnName)) {
-                            string = String.format("<if test=\"%s!=null and %s!=''.toString()\">%s=#{%s}</if>",
+                            string = String.format("<if test=\"%s!=null and %s!=''.toString()\">%s=#{%s}</if>)",
                                     fieldName2, fieldName2, tableColumn2.getColumnName(), fieldName2);
                             strings.add(string);
                         }
@@ -230,7 +232,7 @@ public class FileService {
                             strings.add(string);
                         }
                     } else if (j==tableColumns.size()-1) {
-                        string = String.format("<if test=\"%s!=null and %s!=''.toString()\">%s=#{%s}</if>",
+                        string = String.format("<if test=\"%s!=null and %s!=''.toString()\">%s=#{%s}</if>)",
                                 fieldName2, fieldName2, tableColumn2.getColumnName(), fieldName2);
                         strings.add(string);
                     }
@@ -245,7 +247,7 @@ public class FileService {
                     strings.add(string);
                     if (j==tableColumns.size()-2) {
                         if (tableColumns.get(tableColumns.size()-1).getColumnName().equals(columnName)) {
-                            string = String.format("<if test=\"%s!=null\">%s=#{%s}</if>",
+                            string = String.format("<if test=\"%s!=null\">%s=#{%s}</if>)",
                                     fieldName2, tableColumn2.getColumnName(), fieldName2);
                             strings.add(string);
                         }
@@ -255,7 +257,7 @@ public class FileService {
                             strings.add(string);
                         }
                     } else if (j==tableColumns.size()-1) {
-                        string = String.format("<if test=\"%s!=null\">%s=#{%s}</if>",
+                        string = String.format("<if test=\"%s!=null\">%s=#{%s}</if>)",
                                 fieldName2, tableColumn2.getColumnName(), fieldName2);
                         strings.add(string);
                     }
@@ -296,6 +298,7 @@ public class FileService {
         for (int i = 0; i < tableColumns.size(); i++) {
             TableColumn column = tableColumns.get(i);
             String dataType=getDataType(tableColumns, column.getColumnName());
+            dataType=convertDataType(dataType);
             String upperFieldName = CommonUtil.convert(column.getColumnName());
             String fieldName = upperFieldName.substring(0, 1).toLowerCase() + upperFieldName.substring(1);
             if (dataType.equals("String")) {
@@ -304,7 +307,7 @@ public class FileService {
                 string = String.format("<if test=\"%s==''.toString()\">''</if>", fieldName);
                 stringBuilder.append(string);
                 if (i==tableColumns.size()-1) {
-                    string = String.format("<if test=\"%s!=null and %s!=''.toString()\">#{%s}</if>",
+                    string = String.format("<if test=\"%s!=null and %s!=''.toString()\">#{%s}</if>)",
                             fieldName, fieldName, fieldName);
                     stringBuilder.append(string);
                 }
@@ -336,26 +339,6 @@ public class FileService {
         strings.add("</mapper>");
         stringsToFile(fullPath, strings);
         return true;
-    }
-
-    private String getDbType(Map<String, String>typeMap, String javaType) {
-        int index=javaType.lastIndexOf(".");
-        if (index>0) {
-            javaType=javaType.substring(index+1);
-        }
-        String dbType=null;
-        for(Map.Entry<String, String>entry: typeMap.entrySet()) {
-            String value=entry.getValue();
-            index=value.lastIndexOf(".");
-            if (index>-1) {
-                value=value.substring(index+1);
-            }
-            if (value.equals(javaType)) {
-                dbType=entry.getKey();
-                break;
-            }
-        }
-        return dbType;
     }
 
     private boolean generateEntity(String path, String pkg, String tableName) throws Exception {
@@ -399,6 +382,7 @@ public class FileService {
             String upperFieldName = CommonUtil.convert(column.getColumnName());
             String fieldName = upperFieldName.substring(0, 1).toLowerCase() + upperFieldName.substring(1);
             String dataType = typeMap.get(column.getDataType());
+            dataType=convertDataType(dataType);
             string = String.format("private %s %s;", dataType, fieldName);
             fieldList.add(string);
 
@@ -475,6 +459,37 @@ public class FileService {
         return true;
     }
 
+    private String convertDataType(String dataType) {
+        int index=dataType.lastIndexOf(".");
+        if (index>-1) {
+            String string=dataType.substring(0, index);
+            if (string.equals("java.lang")) {
+                dataType=dataType.substring(index+1);
+            }
+        }
+        return dataType;
+    }
+
+    private String getDbType(Map<String, String>typeMap, String javaType) {
+        int index=javaType.lastIndexOf(".");
+        if (index>0) {
+            javaType=javaType.substring(index+1);
+        }
+        String dbType=null;
+        for(Map.Entry<String, String>entry: typeMap.entrySet()) {
+            String value=entry.getValue();
+            index=value.lastIndexOf(".");
+            if (index>-1) {
+                value=value.substring(index+1);
+            }
+            if (value.equals(javaType)) {
+                dbType=entry.getKey();
+                break;
+            }
+        }
+        return dbType;
+    }
+
     private String getDataType(List<TableColumn> tableColumns, String columnName) {
         for (int i = 0; i < tableColumns.size(); i++) {
             TableColumn column = tableColumns.get(i);
@@ -486,15 +501,15 @@ public class FileService {
     }
 
     private void getPk(List<ConstraintColumn> constraintColumns) {
-        if (constraintColumns != null) {
-            Iterator<ConstraintColumn> iterator = constraintColumns.iterator();
-            while (iterator.hasNext()) {
-                ConstraintColumn column = iterator.next();
-                if (!column.getConstraintName().toLowerCase().endsWith("_pk")) {
-                    iterator.remove();
-                }
-            }
-        }
+//        if (constraintColumns != null) {
+//            Iterator<ConstraintColumn> iterator = constraintColumns.iterator();
+//            while (iterator.hasNext()) {
+//                ConstraintColumn column = iterator.next();
+//                if (!column.getConstraintName().toLowerCase().endsWith("_pk")) {
+//                    iterator.remove();
+//                }
+//            }
+//        }
     }
 
     private Map<String, String> getMap(String jsonString) throws Exception {
