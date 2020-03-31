@@ -222,7 +222,7 @@ public class FileService {
                     strings.add(string);
                     if (j==tableColumns.size()-2) {
                         if (tableColumns.get(tableColumns.size()-1).getColumnName().equals(columnName)) {
-                            string = String.format("<if test=\"%s!=null and %s!=''.toString()\">%s=#{%s}</if>)",
+                            string = String.format("<if test=\"%s!=null and %s!=''.toString()\">%s=#{%s}</if>",
                                     fieldName2, fieldName2, tableColumn2.getColumnName(), fieldName2);
                             strings.add(string);
                         }
@@ -232,7 +232,7 @@ public class FileService {
                             strings.add(string);
                         }
                     } else if (j==tableColumns.size()-1) {
-                        string = String.format("<if test=\"%s!=null and %s!=''.toString()\">%s=#{%s}</if>)",
+                        string = String.format("<if test=\"%s!=null and %s!=''.toString()\">%s=#{%s}</if>",
                                 fieldName2, fieldName2, tableColumn2.getColumnName(), fieldName2);
                         strings.add(string);
                     }
@@ -247,7 +247,7 @@ public class FileService {
                     strings.add(string);
                     if (j==tableColumns.size()-2) {
                         if (tableColumns.get(tableColumns.size()-1).getColumnName().equals(columnName)) {
-                            string = String.format("<if test=\"%s!=null\">%s=#{%s}</if>)",
+                            string = String.format("<if test=\"%s!=null\">%s=#{%s}</if>",
                                     fieldName2, tableColumn2.getColumnName(), fieldName2);
                             strings.add(string);
                         }
@@ -257,7 +257,7 @@ public class FileService {
                             strings.add(string);
                         }
                     } else if (j==tableColumns.size()-1) {
-                        string = String.format("<if test=\"%s!=null\">%s=#{%s}</if>)",
+                        string = String.format("<if test=\"%s!=null\">%s=#{%s}</if>",
                                 fieldName2, tableColumn2.getColumnName(), fieldName2);
                         strings.add(string);
                     }
