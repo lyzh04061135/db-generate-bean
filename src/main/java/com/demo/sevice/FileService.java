@@ -21,7 +21,35 @@ import java.util.Map;
 public class FileService {
     private static final String lineSeparate = "\r\n";
     private static final String db = "MDMDB";
-    private static final String jsonMap = "{\"CHAR\":\"java.lang.String\",\"VARCHAR\":\"java.lang.String\",\"LONGVARCHAR\":\"java.lang.String\",\"NUMERIC\":\"java.math.BigDecimal\",\"DECIMAL\":\"java.math.BigDecimal\",\"BIT\":\"Boolean\",\"TINYINT\":\"Byte\",\"SMALLINT\":\"Short\",\"INTEGER\":\"Integer\",\"BIGINT\":\"Long\",\"REAL\":\"Float\",\"FLOAT\":\"Double\",\"DOUBLE\":\"Double\",\"BINARY\":\"byte[]\",\"VARBINARY\":\"byte[]\",\"LONGVARBINARY\":\"byte[]\",\"DATE\":\"java.sql.Date\",\"TIME\":\"java.sql.Time\",\"TIMESTAMP\":\"java.sql.Timestamp\",\"DATETIME\":\"java.sql.Timestamp\",\"BLOB\":\"java.sql.Blob\",\"CLOB\":\"java.sql.Clob\",\"STRUCT\":\"java.sql.Struct\",\"REF\":\"java.sql.Ref\",\"ARRAY\":\"java.sql.Array\",\"CURSOR\":\"java.sql.ResultSet\",\"TIMESTAMPTZ\":\"java.sql.Timestamp\",\"TIMESTAMPLTZ\":\"java.sql.Timestamp\"}";
+    private static final String jsonMap = "{\"CHAR\":\"String\"," +
+            "\"VARCHAR\":\"String\"," +
+            "\"LONGVARCHAR\":\"String\"," +
+            "\"NUMERIC\":\"java.math.BigDecimal\"," +
+            "\"DECIMAL\":\"java.math.BigDecimal\"," +
+            "\"BIT\":\"Boolean\"," +
+            "\"TINYINT\":\"Byte\"," +
+            "\"SMALLINT\":\"Short\"," +
+            "\"INTEGER\":\"Integer\"," +
+            "\"INT\":\"Integer\"," +
+            "\"BIGINT\":\"Long\"," +
+            "\"REAL\":\"Float\"," +
+            "\"FLOAT\":\"Double\"," +
+            "\"DOUBLE\":\"Double\"," +
+            "\"BINARY\":\"byte[]\"," +
+            "\"VARBINARY\":\"byte[]\"," +
+            "\"LONGVARBINARY\":\"byte[]\"," +
+            "\"DATE\":\"java.sql.Date\"," +
+            "\"TIME\":\"java.sql.Time\"," +
+            "\"TIMESTAMP\":\"java.sql.Timestamp\"," +
+            "\"DATETIME\":\"java.sql.Timestamp\"," +
+            "\"BLOB\":\"java.sql.Blob\"," +
+            "\"CLOB\":\"java.sql.Clob\"," +
+            "\"STRUCT\":\"java.sql.Struct\"," +
+            "\"REF\":\"java.sql.Ref\"," +
+            "\"ARRAY\":\"java.sql.Array\"," +
+            "\"CURSOR\":\"java.sql.ResultSet\"," +
+            "\"TIMESTAMPTZ\":\"java.sql.Timestamp\"," +
+            "\"TIMESTAMPLTZ\":\"java.sql.Timestamp\"}";
     private static Map<String, String> typeMap = null;
 
     static {
@@ -406,20 +434,36 @@ public class FileService {
                 paramBuilder.append(String.format("%s %s", dataType, fieldName));
             }
 
-            stringList.add("stringBuilder.append(\"{\");");
+            if(i==0) {
+                stringList.add("stringBuilder.append(\"{\");");
+            }
             string = String.format("stringBuilder.append(\"\\\"%s\\\"\");", fieldName);
             stringList.add(string);
             stringList.add("stringBuilder.append(\":\");");
+            string=String.format("if(%s!=null) {", fieldName);
+            stringList.add(string);
             stringList.add("stringBuilder.append(\"\\\"\");");
             string = String.format(" stringBuilder.append(%s);", fieldName);
             stringList.add(string);
+            stringList.add("} else {");
+            stringList.add(" stringBuilder.append(\"null\");");
+            stringList.add("}");
             if (i == tableColumns.size() - 1) {
+                string=String.format("if(%s!=null) {", fieldName);
+                stringList.add(string);
                 stringList.add("stringBuilder.append(\"\\\"\");");
+                stringList.add("}");
                 stringList.add("stringBuilder.append(\"}\");");
                 stringList.add("return stringBuilder.toString();");
                 stringList.add("}");
+                log.debug(CommonUtil.toString(stringList));
             } else {
+                string=String.format("if(%s!=null) {", fieldName);
+                stringList.add(string);
                 stringList.add("stringBuilder.append(\"\\\",\");");
+                stringList.add("} else {");
+                stringList.add(" stringBuilder.append(\",\");");
+                stringList.add("}");
             }
 
             string = String.format("this.%s=%s;", fieldName, fieldName);
@@ -460,6 +504,10 @@ public class FileService {
     }
 
     private String convertDataType(String dataType) {
+        if (dataType==null) {
+            log.error("");
+            return "unknownDataType";
+        }
         int index=dataType.lastIndexOf(".");
         if (index>-1) {
             String string=dataType.substring(0, index);
