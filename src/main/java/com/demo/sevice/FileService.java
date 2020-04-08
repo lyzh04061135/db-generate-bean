@@ -136,6 +136,7 @@ public class FileService {
         strings.add(string);
         strings.add("");
         strings.add("import java.util.List;");
+        strings.add("import org.apache.ibatis.annotations.Param;");
         strings.add("");
         string = String.format("public interface %s {", fileNameWithoutSuffix+"Dao");
         strings.add(string);
@@ -153,7 +154,7 @@ public class FileService {
                 String dataType=getDataType(tableColumns, column.getColumnName());
                 dataType=convertDataType(dataType);
                 String fieldName = upperFieldName.substring(0, 1).toLowerCase() + upperFieldName.substring(1);
-                string = String.format("List<%s> getPk(%s %s);", fileNameWithoutSuffix+"Entity", dataType, fieldName);
+                string = String.format("List<%s> getPk(@Param(\"%s\") %s %s);", fileNameWithoutSuffix+"Entity", fieldName, dataType, fieldName);
                 strings.add(string);
                 strings.add("");
 
@@ -162,7 +163,7 @@ public class FileService {
                 strings.add(string);
                 strings.add("");
 
-                string = String.format("Integer removePk(%s %s);", dataType, fieldName);
+                string = String.format("Integer removePk(@Param(\"%s\") %s %s);", fieldName, dataType, fieldName);
                 strings.add(string);
                 strings.add("");
             }
