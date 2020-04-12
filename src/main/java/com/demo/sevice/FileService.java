@@ -21,41 +21,48 @@ import java.util.Map;
 public class FileService {
     private static final String lineSeparate = "\r\n";
     private static final String db = "MDMDB";
-    private static final String jsonMap = "{\"CHAR\":\"String\"," +
-            "\"VARCHAR\":\"String\"," +
-            "\"LONGVARCHAR\":\"String\"," +
-            "\"NUMERIC\":\"java.math.BigDecimal\"," +
-            "\"DECIMAL\":\"java.math.BigDecimal\"," +
-            "\"BIT\":\"Boolean\"," +
-            "\"TINYINT\":\"Byte\"," +
-            "\"SMALLINT\":\"Short\"," +
-            "\"INTEGER\":\"Integer\"," +
-            "\"INT\":\"Integer\"," +
-            "\"BIGINT\":\"Long\"," +
-            "\"REAL\":\"Float\"," +
-            "\"FLOAT\":\"Double\"," +
-            "\"DOUBLE\":\"Double\"," +
-            "\"BINARY\":\"byte[]\"," +
-            "\"VARBINARY\":\"byte[]\"," +
-            "\"LONGVARBINARY\":\"byte[]\"," +
-            "\"DATE\":\"java.sql.Date\"," +
-            "\"TIME\":\"java.sql.Time\"," +
-            "\"TIMESTAMP\":\"java.sql.Timestamp\"," +
-            "\"DATETIME\":\"java.sql.Timestamp\"," +
-            "\"BLOB\":\"java.sql.Blob\"," +
-            "\"CLOB\":\"java.sql.Clob\"," +
-            "\"STRUCT\":\"java.sql.Struct\"," +
-            "\"REF\":\"java.sql.Ref\"," +
-            "\"ARRAY\":\"java.sql.Array\"," +
-            "\"CURSOR\":\"java.sql.ResultSet\"," +
-            "\"TIMESTAMPTZ\":\"java.sql.Timestamp\"," +
-            "\"TIMESTAMPLTZ\":\"java.sql.Timestamp\"}";
+    private static final String dmJava = "{"
+            + "\"CHAR\":\"String\""
+            + ",\"VARCHAR\":\"String\""
+            + ",\"VARCHAR2\":\"String\""
+            + ",\"NVARCHAR2\":\"String\""
+            + ",\"NCHAR\":\"String\""
+            + ",\"LONG VARCHAR\":\"String\""
+            + ",\"DATE\":\"java.sql.Date\""
+            + ",\"TIME\":\"java.sql.Time\""
+            + ",\"TIMESTAMP\":\"java.sql.Timestamp\""
+            + ",\"DATETIME\":\"java.sql.Timestamp\""
+            + ",\"TIMESTAMPTZ\":\"java.sql.Timestamp\""
+            + ",\"TIMESTAMPLTZ\":\"java.sql.Timestamp\""
+            + ",\"NUMERIC\":\"java.math.BigDecimal\""
+            + ",\"NUMBER\":\"java.math.BigDecimal\""
+            + ",\"DECIMAL\":\"java.math.BigDecimal\""
+            + ",\"BIT\":\"Boolean\""
+            + ",\"TINYINT\":\"Byte\""
+            + ",\"SMALLINT\":\"Short\""
+            + ",\"INTEGER\":\"Integer\""
+            + ",\"INT\":\"Integer\""
+            + ",\"BIGINT\":\"Long\""
+            + ",\"REAL\":\"Float\""
+            + ",\"FLOAT\":\"Double\""
+            + ",\"DOUBLE\":\"Double\""
+            + ",\"BINARY\":\"byte[]\""
+            + ",\"VARBINARY\":\"byte[]\""
+            + ",\"LONGVARBINARY\":\"byte[]\""
+            + ",\"BLOB\":\"java.sql.Blob\""
+            + ",\"CLOB\":\"java.sql.Clob\""
+            + ",\"NCLOB\":\"java.sql.Clob\""
+            + ",\"STRUCT\":\"java.sql.Struct\""
+            + ",\"REF\":\"java.sql.Ref\""
+            + ",\"ARRAY\":\"java.sql.Array\""
+            + ",\"CURSOR\":\"java.sql.ResultSet\""
+            + "}";
     private static Map<String, String> typeMap = null;
 
     static {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            typeMap = objectMapper.readValue(jsonMap, Map.class);
+            typeMap = objectMapper.readValue(dmJava, Map.class);
         } catch (IOException e) {
             log.error("", e);
         }
