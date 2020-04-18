@@ -41,7 +41,12 @@ public class DbController {
 
         Map<String, Object> result=new HashMap<>();
         try {
-            service.generate(path, pkg, tableName);
+            boolean flag=service.generate(path, pkg, tableName);
+            if (flag==false) {
+                result.put("msg", "fail");
+                result.put("code", "1");
+                return result;
+            }
         } catch (Exception e) {
             log.error("", e);
             result.put("msg", "fail");

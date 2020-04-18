@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.*;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -111,6 +108,13 @@ public class FileService {
     }
 
     public boolean generate(String path, String pkg, String tableName) throws Exception {
+        Map<String, Object>param=new HashMap<>();
+        param.put("tableName", tableName);
+        param.put("owner", "MDMDB");
+        List<Map<String, Object>>list=dao.getTableInfo(param);
+        if (list==null || list.size()==0) {
+            return false;
+        }
         boolean flag = generateEntity(path, pkg, tableName);
         if (!flag) {
             return flag;
